@@ -55,9 +55,7 @@ router.get('/', async (req, res, next) => {
     const ids = content.map((o) => o.name)
 
     res.status(200).json({
-      list: content
-        .filter(({ name }, index) => !ids.includes(name, index + 1))
-        .filter((x) => x.status === 200)
+      list: content.filter(({ name }, index) => !ids.includes(name, index + 1))
     })
   } catch (error) {
     next(error)
