@@ -23,7 +23,7 @@ router.get('/', async (req, res, next) => {
       })
 
     const content = await Promise.all(
-      components.map(async (v) => {
+      (components || []).map(async (v) => {
         const url = `http://${v.metadata.name}.${process.env.NAMESPACE}.svc:${v.spec.ports[0].port}/healthz`
         const payload = {
           name: v.metadata.name
