@@ -22,11 +22,11 @@ router.get('/', async (req, res, next) => {
         return null
       })
 
+    logger.debug(components)
+
     if (!components) {
       return res.status(500).json({ message: 'Error on reading components' })
     }
-
-    logger.debug(components)
 
     const content = await Promise.all(
       (components || []).map(async (v) => {
