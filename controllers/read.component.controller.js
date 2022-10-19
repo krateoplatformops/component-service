@@ -22,6 +22,10 @@ router.get('/', async (req, res, next) => {
         return err
       })
 
+    if (!components) {
+      return res.status(500).json({ message: 'Error on reading components' })
+    }
+
     const content = await Promise.all(
       (components || []).map(async (v) => {
         const url = `http://${v.metadata.name}.${process.env.NAMESPACE}.svc:${v.spec.ports[0].port}/healthz`
