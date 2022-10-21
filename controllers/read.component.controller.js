@@ -8,6 +8,10 @@ router.get('/', async (req, res, next) => {
   try {
     logger.debug(`namespace: ${process.env.NAMESPACE}`)
 
+    logger.debug(
+      `KUBERNETES_SERVICE_PORT: ${process.env.KUBERNETES_SERVICE_PORT}`
+    )
+
     const kc = new k8s.KubeConfig()
     kc.loadFromDefault()
     const k8sApi = kc.makeApiClient(k8s.CoreV1Api)
@@ -17,8 +21,8 @@ router.get('/', async (req, res, next) => {
       .then((response) => {
         return response.body.items
       })
-      .catch((err) => {
-        logger.error(err)
+      .catch(() => {
+        logger.error('Cannot get services')
         return null
       })
 
