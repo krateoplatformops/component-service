@@ -3,9 +3,12 @@ const router = express.Router()
 const logger = require('../service-library/helpers/logger.helpers')
 const k8s = require('@kubernetes/client-node')
 const axios = require('axios')
+const k8sHelpers = require('../service-library/helpers/k8s.helpers')
 
 router.get('/', async (req, res, next) => {
   try {
+    k8sHelpers.init()
+
     logger.debug(`namespace: ${process.env.NAMESPACE}`)
 
     logger.debug(
