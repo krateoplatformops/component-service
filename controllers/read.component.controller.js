@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const logger = require('../service-library/helpers/logger.helpers')
-const k8s = require('@kubernetes/client-node')
 const axios = require('axios')
 const k8sHelpers = require('../service-library/helpers/k8s.helpers')
+const envConstants = require('../service-library/constants/env.constants')
 
 router.get('/', async (req, res, next) => {
   try {
@@ -16,7 +16,7 @@ router.get('/', async (req, res, next) => {
     )
 
     const components = await k8sHelpers.getList(
-      '/api/v1/services',
+      `/api/v1/namespaces/${envConstants.NAMESPACE}/services`,
       'app.kubernetes.io/component=service&app.kubernetes.io/part-of=krateo'
     )
 
