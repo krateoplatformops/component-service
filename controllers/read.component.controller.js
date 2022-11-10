@@ -15,19 +15,10 @@ router.get('/', async (req, res, next) => {
       `KUBERNETES_SERVICE_PORT: ${process.env.KUBERNETES_SERVICE_PORT}`
     )
 
-    const kc = new k8s.KubeConfig()
-    kc.loadFromDefault()
-    const k8sApi = kc.makeApiClient(k8s.CoreV1Api)
-
-    const components = await k8sApi
-      .listNamespacedService(process.env.NAMESPACE)
-      .then((response) => {
-        return response.body.items
-      })
-      .catch(() => {
-        logger.error('Cannot get services')
-        return null
-      })
+    const components = await k8sHelpers.getList(
+      '/api/v1/services',
+      'app.kubernetes.io/component=service&app.kubernetes.io/part-of=krateo'
+    )
 
     logger.debug(components)
 
